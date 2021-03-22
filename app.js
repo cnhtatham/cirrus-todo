@@ -20,6 +20,7 @@ app.get('/tasks', (req, res) => {
   res.status(200).send(tasks);
 });
 
+// Post request to add new task to db
 app.post('/tasks', (req, res) => {
   id += 1;
   const newTask = {
@@ -29,6 +30,18 @@ app.post('/tasks', (req, res) => {
   };
   tasks.push(newTask);
   res.status(201).send(newTask);
+})
+
+// Get request to return specific task specified by the ID in request parameters
+// Returns 404 if not task found with requested id
+app.get('/tasks/:id', (req, res) => {
+
+    let task = tasks.find((element) => element.id == req.params.id)
+    if (task) {
+        res.status(200).send(task);
+    } else {
+        res.status(404).send()
+    }
 });
 
 module.exports = app;

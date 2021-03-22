@@ -35,8 +35,8 @@ describe('POST /tasks', () => {
       .post('/tasks')
       .type('form')
       .send({
-          title : 'Brush Teeth'
-      })
+        title: 'Brush Teeth',
+      });
 
     expect(newTask.body).toHaveProperty('id');
     expect(newTask.body.title).toBe('Brush Teeth');
@@ -47,5 +47,36 @@ describe('POST /tasks', () => {
     const response = await request(app).get('/tasks');
     expect(response.body.length).toBe(3);
     expect(response.statusCode).toBe(200);
+  });
+});
+
+describe('GET /tasks/:id', () => {
+  test('It should respond with a single task with id : 1', async () => {
+    const response = await request(app).get('/tasks/1');
+    expect(response.body).toEqual(
+      {
+        id: 1,
+        title: 'Buy groceries',
+        completed: false,
+      },
+    );
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('It should respond with a single task with id : 2', async () => {
+    const response = await request(app).get('/tasks/2');
+    expect(response.body).toEqual(
+      {
+        id: 2,
+        title: 'Do laundry',
+        completed: true,
+      },
+    );
+    expect(response.statusCode).toBe(200);
+  });
+
+  test('It should respond with a 404 status code', async () => {
+    const response = await request(app).get('/tasks/0');
+    expect(response.statusCode).toBe(404);
   });
 });
