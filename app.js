@@ -17,4 +17,4 @@ app.get('/tasks', (req, res) => {
   res.status(200).send(tasks);
 });
 
-app.listen(3000);
+module.exports = app;
