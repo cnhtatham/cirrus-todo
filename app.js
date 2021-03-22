@@ -8,6 +8,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Load in our tasks json file into variable
 // This variable will act as the database
 const tasks = JSON.parse(fs.readFileSync('tasks.json'));
+
+// id Variable to make sure we have unique id for each task added
 let id = tasks.length;
 
 app.get('/', (req, res) => { // get method
@@ -30,18 +32,30 @@ app.post('/tasks', (req, res) => {
   };
   tasks.push(newTask);
   res.status(201).send(newTask);
-})
+});
 
 // Get request to return specific task specified by the ID in request parameters
 // Returns 404 if not task found with requested id
 app.get('/tasks/:id', (req, res) => {
+  const task = tasks.find((element) => element.id == req.params.id);
+  if (task) {
+    res.status(200).send(task);
+  } else {
+    res.status(404).send();
+  }
+});
 
-    let task = tasks.find((element) => element.id == req.params.id)
-    if (task) {
-        res.status(200).send(task);
-    } else {
-        res.status(404).send()
-    }
+// Put request to fully update task specified by id url param
+// Returns 404 if not task found with requested id
+app.put('/tasks/:id', (req, res) => {
+  const taskIndex = tasks.findIndex((element) => element.id == req.params.id);
+  if (taskIndex >= 0) {
+    tasks[taskIndex].title = req.body.title;
+    tasks[taskIndex].completed = Boolean(req.body.completed);
+    res.status(200).send(tasks[taskIndex]);
+  } else {
+    res.status(404).send();
+  }
 });
 
 module.exports = app;
