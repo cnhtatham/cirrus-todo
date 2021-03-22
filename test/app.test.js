@@ -80,3 +80,52 @@ describe('GET /tasks/:id', () => {
     expect(response.statusCode).toBe(404);
   });
 });
+
+describe('PUT /tasks/:id', () => {
+    test('It should respond with a single task with id : 1 and updated fields', async () => {
+      const response = await request(app)
+      .put('/tasks/1')
+      .type('form')
+      .send({
+          completed : true,
+          title : 'Buy Groceries'
+      });
+      expect(response.body).toEqual(
+        {
+          id: 1,
+          title: 'Buy Groceries',
+          completed: true,
+        },
+      );
+      expect(response.statusCode).toBe(200);
+    });
+  
+    test('It should respond with a single task with id : 2 and updated fields', async () => {
+      const response = await request(app)
+      .put('/tasks/2')
+      .type('form')
+      .send({
+          completed : true,
+          title : 'Brush Teeth'
+      });
+      expect(response.body).toEqual(
+        {
+          id: 2,
+          title: 'Brush Teeth',
+          completed: true,
+        },
+      );
+      expect(response.statusCode).toBe(200);
+    });
+  
+    test('It should respond with a 404 status code', async () => {
+      const response = await request(app)
+      .put('/tasks/0')
+      .type('form')
+      .send({
+          completed : true,
+          title : 'Brush Teeth'
+      });
+      expect(response.statusCode).toBe(404);
+    });
+  });
