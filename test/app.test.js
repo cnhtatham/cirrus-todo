@@ -28,3 +28,24 @@ describe('GET /tasks', () => {
     expect(response.statusCode).toBe(200);
   });
 });
+
+describe('POST /tasks', () => {
+  test('It should respond with new task object that has been inserted into DB', async () => {
+    const newTask = await request(app)
+      .post('/tasks')
+      .type('form')
+      .send({
+          title : 'Brush Teeth'
+      })
+
+    expect(newTask.body).toHaveProperty('id');
+    expect(newTask.body.title).toBe('Brush Teeth');
+    expect(newTask.body.completed).toBe(false);
+    expect(newTask.statusCode).toBe(201);
+
+    // make sure we have 3 students now
+    const response = await request(app).get('/tasks');
+    expect(response.body.length).toBe(3);
+    expect(response.statusCode).toBe(200);
+  });
+});
