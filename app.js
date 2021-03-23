@@ -56,7 +56,7 @@ app.post('/tasks', (req, res) => {
 // Get request to return specific task specified by the ID in request parameters
 // Returns 404 if no task found with requested id
 app.get('/tasks/:id', (req, res) => {
-  console('GET /tasks/:id request received');
+  console.log('GET /tasks/:id request received');
   const task = tasks.find((element) => String(element.id) === req.params.id);
   if (task) {
     res.status(200).send(task);
