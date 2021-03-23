@@ -107,7 +107,7 @@ describe('PUT /tasks/:id', () => {
           completed: true,
         },
       );
-      expect(response1statusCode).toBe(200);
+      expect(response1.statusCode).toBe(200);
 
       // Test to see if change has been written to database.
       // Should respond with exact same task as PUT request with 200 status code.
