@@ -17,10 +17,12 @@ let id = tasks.length;
 const updateData = (task, updates) => {
   const updatedTask = task;
   Object.entries(updates).forEach(([key, value]) => {
-    if (key in task) {
+    // Filter out any extra fields provided in request
+    // as well as the id field which should not be updated
+    if (key in task || key !== 'id') {
       if (key === 'completed') {
         updatedTask[key] = value === 'true';
-      } else {
+      } else if (key === 'title') {
         updatedTask[key] = value;
       }
     }
