@@ -43,7 +43,7 @@ describe('POST /tasks', () => {
     expect(newTask.body.completed).toBe(false);
     expect(newTask.statusCode).toBe(201);
 
-    // make sure we have 3 students now
+    // make sure we have 3 tasks now
     const response = await request(app).get('/tasks');
     expect(response.body.length).toBe(3);
     expect(response.statusCode).toBe(200);
@@ -216,3 +216,26 @@ describe('PUT /tasks/:id', () => {
       expect(response.statusCode).toBe(404);
     });
   });
+
+  describe('DELETE /tasks/:id', () => {
+    test('It should respond with a 204 and the task should no longer appear after a get', async () => {
+      const deleteResponse = await request(app)
+        .delete('/tasks/3');
+      expect(deleteResponse.statusCode).toBe(204);
+  
+      // make sure we have 2 tasks now
+      const response1 = await request(app).get('/tasks');
+      expect(response1.body.length).toBe(2);
+      expect(response1.statusCode).toBe(200);
+
+      const response2 = await request(app).get('/tasks/3');
+      expect(response2.statusCode).toBe(404);
+    });
+
+    test('It should respond with a 404 status code', async () => {
+      const response = await request(app)
+        .delete('/tasks/0');
+      expect(response.statusCode).toBe(404);
+    });
+  });
+  
