@@ -66,8 +66,7 @@ app.get('/tasks/:id', (req, res) => {
 app.put('/tasks/:id', (req, res) => {
   const taskIndex = tasks.findIndex((element) => String(element.id) === req.params.id);
   if (taskIndex >= 0) {
-    tasks[taskIndex].title = req.body.title;
-    tasks[taskIndex].completed = Boolean(req.body.completed);
+    tasks[taskIndex] = updateData(tasks[taskIndex], req.body);
     res.status(200).send(tasks[taskIndex]);
   } else {
     res.status(404).send(`No task found with id ${req.params.id}`);
