@@ -29,17 +29,20 @@ const updateData = (task, updates) => {
 };
 
 app.get('/', (req, res) => { // get method
+  console.log('GET / request received')
   res.send('Hello World'); // send response
 });
 
 // Get request to retrive the full list of tasks
 // Specifying response code as 200 to allow for customisation later if needed
 app.get('/tasks', (req, res) => {
+  console.log('GET /tasks request received')
   res.status(200).send(tasks);
 });
 
 // Post request to add new task to db
 app.post('/tasks', (req, res) => {
+  console.log('POST /tasks request received')
   id += 1;
   const newTask = {
     id,
@@ -53,6 +56,7 @@ app.post('/tasks', (req, res) => {
 // Get request to return specific task specified by the ID in request parameters
 // Returns 404 if no task found with requested id
 app.get('/tasks/:id', (req, res) => {
+  console('GET /tasks/:id request received')
   const task = tasks.find((element) => String(element.id) === req.params.id);
   if (task) {
     res.status(200).send(task);
@@ -64,6 +68,7 @@ app.get('/tasks/:id', (req, res) => {
 // Put request to fully update task specified by id url param
 // Returns 404 if no task found with requested id
 app.put('/tasks/:id', (req, res) => {
+  console.log('PUT /tasks/:id request received')
   const taskIndex = tasks.findIndex((element) => String(element.id) === req.params.id);
   if (taskIndex >= 0) {
     tasks[taskIndex] = updateData(tasks[taskIndex], req.body);
@@ -76,6 +81,7 @@ app.put('/tasks/:id', (req, res) => {
 // Patch request to allow partial update of task specified by id url param
 // Returns 404 if no task found with requested id
 app.patch('/tasks/:id', (req, res) => {
+  console.log('PATCH /tasks/:id request received')
   const taskIndex = tasks.findIndex((element) => String(element.id) === req.params.id);
   if (taskIndex >= 0) {
     tasks[taskIndex] = updateData(tasks[taskIndex], req.body);
