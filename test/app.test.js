@@ -117,10 +117,97 @@ describe('PUT /tasks/:id', () => {
       );
       expect(response.statusCode).toBe(200);
     });
+
+    test('It should respond with a single task with id : 2 and updated with new fields filtered out', async () => {
+      const response = await request(app)
+      .put('/tasks/2')
+      .type('form')
+      .send({
+          completed : true,
+          title : 'Brush Teeth',
+          due: 'tomorrow'
+
+      });
+      expect(response.body).toEqual(
+        {
+          id: 2,
+          title: 'Brush Teeth',
+          completed: true,
+        },
+      );
+      expect(response.statusCode).toBe(200);
+    });
   
     test('It should respond with a 404 status code', async () => {
       const response = await request(app)
       .put('/tasks/0')
+      .type('form')
+      .send({
+          completed : true,
+          title : 'Brush Teeth'
+      });
+      expect(response.statusCode).toBe(404);
+    });
+  });
+
+
+  describe('Patch /tasks/:id', () => {
+    test('It should respond with a single task with id : 1 and updated fields', async () => {
+      const response = await request(app)
+      .patch('/tasks/1')
+      .type('form')
+      .send({
+          completed : true,
+      });
+      expect(response.body).toEqual(
+        {
+          id: 1,
+          title: 'Buy Groceries',
+          completed: true,
+        },
+      );
+      expect(response.statusCode).toBe(200);
+    });
+  
+    test('It should respond with a single task with id : 2 and updated fields', async () => {
+      const response = await request(app)
+      .patch('/tasks/2')
+      .type('form')
+      .send({
+          title : 'Brush Teeth'
+      });
+      expect(response.body).toEqual(
+        {
+          id: 2,
+          title: 'Brush Teeth',
+          completed: true,
+        },
+      );
+      expect(response.statusCode).toBe(200);
+    });
+
+    test('It should respond with a single task with id : 2 with updated fields with new fields filtered out', async () => {
+      const response = await request(app)
+      .patch('/tasks/2')
+      .type('form')
+      .send({
+          title : 'Gardening',
+          due: 'tomorrow'
+
+      });
+      expect(response.body).toEqual(
+        {
+          id: 2,
+          title: 'Gardening',
+          completed: true,
+        },
+      );
+      expect(response.statusCode).toBe(200);
+    });
+  
+    test('It should respond with a 404 status code', async () => {
+      const response = await request(app)
+      .patch('/tasks/0')
       .type('form')
       .send({
           completed : true,
