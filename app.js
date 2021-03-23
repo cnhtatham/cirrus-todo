@@ -19,7 +19,7 @@ const updateData = (task, updates) => {
   Object.entries(updates).forEach(([key, value]) => {
     if (key in task) {
       if (key === 'completed') {
-        updatedTask[key] = Boolean(value);
+        updatedTask[key] = value === 'true';
       } else {
         updatedTask[key] = value;
       }
